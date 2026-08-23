@@ -1,0 +1,6 @@
+{
+  "extends": "@PixelBuddy/config/tsconfig.base.json",
+  "compilerOptions": {
+    "strictNullChecks": true
+  }
+}
