@@ -8,7 +8,6 @@
   "files": {
     "ignoreUnknown": false,
     "includes": [
-      "**",
       "!**/.next",
       "!**/dist",
       "!**/.turbo",
@@ -36,6 +35,7 @@
   "assist": {
     "actions": {
       "source": {
+        "useSortedAttributes": "off",
         "organizeImports": "on"
       }
     }
@@ -43,13 +43,13 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "useExhaustiveDependencies": "info"
       },
       "nursery": {
         "useSortedClasses": {
-          "level": "warn",
+          "level": "off",
           "fix": "safe",
           "options": {
             "functions": ["clsx", "cva", "cn"]
@@ -80,5 +80,9 @@
       "tailwindDirectives": true
     }
   },
-  "extends": ["ultracite/biome/core", "ultracite/biome/react", "ultracite/biome/next"]
+  "extends": [
+    "ultracite/biome/core",
+    "ultracite/biome/react",
+    "ultracite/biome/next"
+  ]
 }
