@@ -30,7 +30,94 @@ The project combines mobile development, health-data integration, graphics progr
 
 ---
 
-## The Idea
+# Quick Look
+
+If you only have a minute:
+
+| | |
+|---|---|
+| **What is it?** | A pixel-art game driven by real-world activity |
+| **Main platform** | React Native + Expo |
+| **Activity source** | Apple Health / Apple Watch |
+| **Rendering** | React Native Skia |
+| **Core mechanic** | Physical activity advances a virtual world |
+| **Game concepts** | Exploration, progression, loot, encounters, simulation |
+| **Backend** | Fastify + oRPC + PostgreSQL + Drizzle |
+| **Status** | Active development / early game-world prototype |
+
+The shortest possible explanation is:
+
+```text
+Apple Watch activity
+        ↓
+Pixel walks
+        ↓
+Pixel reaches somewhere new
+```
+
+---
+
+# Contents
+
+Use this as a shortcut depending on what you are interested in.
+
+### 🎮 Product & Game Concept
+
+- [The Idea](#the-idea) — Why PixelBuddy exists and how it differs from a normal fitness app.
+- [Core Philosophy](#core-philosophy) — The rule used to decide which features belong in the project.
+- [The World](#the-world) — How physical distance becomes movement through a fictional pixel-art world.
+- [Apple Watch as a Game Controller](#apple-watch-as-a-game-controller) — How real health/activity data enters the game.
+- [The Main Gameplay Loop](#the-main-gameplay-loop) — The basic activity → simulation → world-update loop.
+
+### 🧍 Game Systems
+
+- [Pixel](#pixel) — The player's character and its internal game state.
+- [Exploration](#exploration) — How walking progresses a journey.
+- [Discoveries](#discoveries) — Unlocking locations, objects, characters, and secrets.
+- [Encounters](#encounters) — Activity-driven random events.
+- [Loot](#loot) — Weighted item drops and collectibles.
+- [Character Progression](#character-progression) — XP, attributes, cosmetics, and progression.
+- [World Progression](#world-progression) — Making workouts visibly change the world.
+- [A Persistent World](#a-persistent-world) — Processing what happened while the app was closed.
+- [Workout Replays](#workout-replays) — Turning real workouts into short animated game stories.
+
+### 🎨 Graphics & Game-Dev Experiments
+
+- [Day / Night and World Atmosphere](#day--night-and-world-atmosphere) — Time, weather, particles, and atmosphere.
+- [Graphics](#graphics) — Using React Native Skia as a small 2D renderer.
+- [Procedural Generation](#procedural-generation) — Seeded worlds, noise, and generated journeys.
+- [Game Systems](#game-systems) — Separating simulation logic into independent systems.
+- [Event-Driven Game Logic](#event-driven-game-logic) — Transforming activity into game events.
+- [Possible Future Game Architecture](#possible-future-game-architecture) — ECS and other deeper game-engine experiments.
+
+### 🛠 Technical
+
+- [Technical Stack](#technical-stack) — React Native, Expo, Skia, Fastify, oRPC, Drizzle, PostgreSQL, and more.
+- [High-Level Architecture](#high-level-architecture) — How Apple Health, game logic, backend, state, and rendering connect.
+- [Suggested Native Game Structure](#suggested-native-game-structure) — Possible folder organization as the game grows.
+- [Repository Structure](#repository-structure) — Monorepo layout.
+- [Getting Started](#getting-started) — Install and run the project.
+- [Database Setup](#database-setup) — PostgreSQL + Drizzle setup.
+- [Development](#development) — Running web, API, and native apps.
+- [Shared UI](#shared-ui) — Shared web UI primitives.
+- [Database Commands](#database-commands) — Database scripts.
+- [Code Quality](#code-quality) — TypeScript, Biome, and checks.
+- [Docker](#docker) — Containerized backend setup.
+- [Available Scripts](#available-scripts) — Useful repository commands.
+
+### 🗺 Project Direction
+
+- [MVP](#mvp) — The intentionally small first playable version.
+- [Example MVP World](#example-mvp-world) — What the first map could contain.
+- [What PixelBuddy Is Not](#what-pixelbuddy-is-not) — Features deliberately excluded from the project.
+- [Roadmap](#roadmap) — Planned development phases.
+- [Why Build This?](#why-build-this) — The engineering motivation behind the project.
+- [Design Rule](#design-rule) — The project's core feature test.
+- [Status](#status) — What is currently being worked on.
+
+---
+
+# The Idea
 
 Most fitness applications represent activity as numbers:
 
@@ -114,13 +201,9 @@ Example:
 
 ```text
 0 km      Pixel Home
-
 2 km      Whispering Woods
-
 5 km      Old Bridge
-
 10 km     Moss Village
-
 20 km     Pixel Mountain
 ```
 
@@ -261,7 +344,7 @@ type PixelState = {
 };
 ```
 
-Eventually Pixel can also have a small simulated brain:
+Eventually Pixel could also have a tiny simulated brain:
 
 ```ts
 type PixelBrain = {
@@ -442,7 +525,7 @@ Found:
 💎 Strange Crystal × 1
 ```
 
-Loot can use weighted probabilities.
+Loot can use weighted probabilities:
 
 ```ts
 const lootTable = [
@@ -625,6 +708,8 @@ The same location can look different depending on time.
 Day:
 
 ```text
+DAY
+
        ☀️
 
 🌲             🌲
@@ -634,9 +719,9 @@ Day:
 🌿 🌿 🌿 🌿 🌿
 ```
 
-Night:
-
 ```text
+NIGHT
+
        🌙
 
 🌲             🌲
@@ -852,6 +937,7 @@ Systems then operate on compatible components:
 
 ```text
 MovementSystem
+
 Position + Velocity
         ↓
 new Position
@@ -970,19 +1056,19 @@ They are simply not what PixelBuddy is trying to explore.
 
 # Technical Stack
 
-PixelBuddy is built using [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), with a TypeScript monorepo containing the mobile application, web application, backend, shared API layer, database, and UI packages.
+PixelBuddy is built using [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), with a TypeScript monorepo containing the native application, web application, backend, shared API layer, database, and UI packages.
 
 ## Mobile
 
 - **React Native** — native mobile application
-- **Expo** — React Native development platform and native project tooling
-- **TypeScript** — type safety across the application
-- **React Native Skia** — custom rendering, animation, and game-world graphics
-- **Apple Health / HealthKit integration** — health and workout data used as game input
+- **Expo** — React Native tooling and native project workflow
+- **TypeScript** — shared type safety
+- **React Native Skia** — custom rendering and animation
+- **Apple Health / HealthKit integration** — physical activity as game input
 
 ## Web
 
-- **Next.js** — web application and supporting tooling
+- **Next.js**
 - **React**
 - **Tailwind CSS**
 - **shadcn/ui**
@@ -1054,7 +1140,7 @@ PixelBuddy is built using [Better-T-Stack](https://github.com/AmanVarshney01/cre
               └─────────────────────┘
 ```
 
-The backend can handle persistent player state, progression, synchronization, accounts, and other server-owned game information.
+The backend can handle persistent player state, accounts, synchronization, and server-owned progression.
 
 The mobile application handles native health-data access, immediate game presentation, and the interactive world.
 
@@ -1154,7 +1240,7 @@ npm install
 
 PixelBuddy uses PostgreSQL with Drizzle ORM.
 
-Create a PostgreSQL database and configure the database connection inside:
+Configure your PostgreSQL connection in:
 
 ```text
 apps/server/.env
@@ -1186,27 +1272,27 @@ API
 http://localhost:3000
 ```
 
-The native application is started through Expo.
+The native application runs through Expo.
 
-Because PixelBuddy uses native Apple Health functionality, development may require a native development build rather than relying entirely on Expo Go.
+Because PixelBuddy uses native Apple Health functionality, some development workflows require a native development build rather than Expo Go.
 
 ---
 
 # Run Individual Applications
 
-Start only the web application:
+Web:
 
 ```bash
 npm run dev:web
 ```
 
-Start only the backend:
+Backend:
 
 ```bash
 npm run dev:server
 ```
 
-Start only the React Native application:
+React Native:
 
 ```bash
 npm run dev:native
@@ -1216,7 +1302,7 @@ npm run dev:native
 
 # Shared UI
 
-React web applications in the monorepo share shadcn/ui primitives through:
+React web applications share shadcn/ui primitives through:
 
 ```text
 packages/ui
@@ -1240,8 +1326,6 @@ shadcn configuration:
 packages/ui/components.json
 apps/web/components.json
 ```
-
----
 
 ## Adding Shared Components
 
@@ -1301,7 +1385,7 @@ Check TypeScript across the workspace:
 npm run check-types
 ```
 
-Run Biome linting and formatting:
+Biome linting and formatting:
 
 ```bash
 npm run check
@@ -1310,8 +1394,6 @@ npm run check
 ---
 
 # Docker
-
-PixelBuddy includes Docker Compose configuration for backend deployment.
 
 Build containers:
 
@@ -1364,10 +1446,10 @@ For additional Better-T-Stack deployment information, see the [Docker Compose gu
 | `npm run db:generate` | Generate database artifacts |
 | `npm run db:migrate` | Run database migrations |
 | `npm run db:studio` | Open the database studio |
-| `npm run docker:build` | Build Docker Compose images |
-| `npm run docker:up` | Start the Docker Compose stack |
-| `npm run docker:logs` | Tail Docker Compose logs |
-| `npm run docker:down` | Stop the Docker Compose stack |
+| `npm run docker:build` | Build Docker images |
+| `npm run docker:up` | Start Docker Compose |
+| `npm run docker:logs` | Tail Docker logs |
+| `npm run docker:down` | Stop Docker Compose |
 
 ---
 
@@ -1423,7 +1505,7 @@ The roadmap is intentionally incremental.
 
 PixelBuddy is partly a product experiment and partly a software-engineering playground.
 
-It provides an excuse to explore things that do not normally appear together in a conventional React application:
+It provides an excuse to explore technologies and concepts that do not normally appear together in a conventional React application:
 
 ```text
 React Native
@@ -1471,9 +1553,9 @@ If it is simply another way to display health statistics, it probably does not.
 
 PixelBuddy is currently under active development.
 
-The health-data foundation is being connected to the first version of the game world and rendering systems.
+The health-data foundation is already being connected to the first version of the game world and rendering systems.
 
-The immediate goal is deliberately small:
+The immediate goal is intentionally small:
 
 ```text
 Apple Watch activity
