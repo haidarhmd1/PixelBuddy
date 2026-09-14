@@ -22,6 +22,7 @@ function DrawerLayout() {
 				headerTintColor: themeColorForeground,
 				headerTitleStyle: {
 					color: themeColorForeground,
+					fontFamily: "font-tiny5",
 					fontWeight: "600",
 				},
 			}}
@@ -37,8 +38,11 @@ function DrawerLayout() {
 						/>
 					),
 					drawerLabel: ({ color, focused }) => (
-						<Text style={{ color: focused ? color : themeColorForeground }}>
-							Home
+						<Text
+							style={{ color: focused ? color : themeColorForeground }}
+							className="font-tiny5"
+						>
+							PIXEL_BUDDY
 						</Text>
 					),
 					headerTitle: "Home",
@@ -55,8 +59,11 @@ function DrawerLayout() {
 						/>
 					),
 					drawerLabel: ({ color, focused }) => (
-						<Text style={{ color: focused ? color : themeColorForeground }}>
-							Tabs
+						<Text
+							style={{ color: focused ? color : themeColorForeground }}
+							className="font-tiny5"
+						>
+							_ABOUT
 						</Text>
 					),
 					headerRight: () => (
